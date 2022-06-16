@@ -562,7 +562,8 @@ static void CG_TouchTriggerPrediction( void ) {
 
 	spectator = ( cg.predictedPlayerState.pm_type == PM_SPECTATOR );
 
-	if ( cg.predictedPlayerState.pm_type != PM_NORMAL && !spectator ) {
+	if ( cg.predictedPlayerState.pm_type != PM_NORMAL
+		&& cg.predictedPlayerState.pm_type != PM_BIRDSEYE && !spectator ) {
 		return;
 	}
 
@@ -1171,6 +1172,27 @@ void CG_PredictPlayerState( void ) {
 			*cg_pmove.ps = cg.savedPmoveStates[ stateIndex ];
 			stateIndex = ( stateIndex + 1 ) % NUM_SAVED_STATES;
 		}
+
+		// ZYGOTE START
+		{
+			short		temp;
+			// Setup temp
+			temp = cg_pmove.cmd.angles[YAW] + cg_pmove.ps->delta_angles[YAW];
+			
+			if ( (temp > -30000) && (temp < 0) ) {
+				cg_pmove.ps->delta_angles[YAW] = -1000 - cg_pmove.cmd.angles[YAW];
+				temp = 0; // RIGHT
+			}
+			if ( (temp < 30000) && (temp > 0) ) {
+				cg_pmove.ps->delta_angles[YAW] = 1000 - cg_pmove.cmd.angles[YAW];
+				temp = 32000; // LEFT
+			}	
+
+			// Copy modified YAW into viewangles
+			cg_pmove.ps->viewangles[YAW] = SHORT2ANGLE(temp);
+		}
+		// ZYGOTE FINISH
+
 
 		moved = qtrue;
 	}

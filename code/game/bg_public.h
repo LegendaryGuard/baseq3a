@@ -118,7 +118,19 @@ typedef enum {
 	PM_DEAD,		// no acceleration or turning, but free falling
 	PM_FREEZE,		// stuck in place with no control
 	PM_INTERMISSION,	// no movement or status bar
-	PM_SPINTERMISSION	// no movement or status bar
+	PM_SPINTERMISSION,	// no movement or status bar
+	PM_FROZEN, // freeze tag, can spectate, can't move
+	PM_PLATFORM,
+	PM_BIRDSEYE,
+
+	PM_LOOKSPLINE, // control look angle from spline
+	PM_MOVESPLINE, // control movement from spline
+	PM_BOTHSPLINE, // control both from spline
+	PM_LOOKQUARTER,
+	PM_LOOKHALF, // allow for 180 degree freelook from the angle 
+	// specified by camera spline nearest current location
+
+	NUM_PLAYERMOVE,
 } pmtype_t;
 
 typedef enum {

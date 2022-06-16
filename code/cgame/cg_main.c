@@ -204,6 +204,13 @@ vmCvar_t	cg_deadBodyDarken;
 vmCvar_t	cg_fovAdjust;
 vmCvar_t	cg_followKiller;
 
+
+vmCvar_t	cg_birdsEye;
+vmCvar_t	cg_birdsEyeRange;
+vmCvar_t	cg_birdsEyeAngle;
+
+
+
 typedef struct {
 	vmCvar_t	*vmCvar;
 	const char	*cvarName;
@@ -329,7 +336,13 @@ static const cvarTable_t cvarTable[] = {
 	{ &cg_teamColors, "cg_teamColors", "", CVAR_ARCHIVE},
 	{ &cg_deadBodyDarken, "cg_deadBodyDarken", "1", CVAR_ARCHIVE},
 	{ &cg_fovAdjust, "cg_fovAdjust", "0", CVAR_ARCHIVE},
-	{ &cg_followKiller, "cg_followKiller", "0", CVAR_ARCHIVE}
+	{ &cg_followKiller, "cg_followKiller", "0", CVAR_ARCHIVE},
+
+	{ &cg_birdsEyeRange, "cg_birdsEyeRange", "300", CVAR_CHEAT },
+	{ &cg_birdsEyeAngle, "cg_birdsEyeAngle", "0", CVAR_CHEAT },
+	{ &cg_birdsEye, "cg_birdsEye", "0", 0 },
+
+
 };
 
 

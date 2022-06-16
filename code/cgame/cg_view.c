@@ -229,7 +229,7 @@ static void CG_OffsetThirdPersonView( void ) {
 
 	VectorCopy( cg.refdef.vieworg, view );
 
-	view[2] += 8;
+	view[2] += 6;
 
 	cg.refdefViewAngles[PITCH] *= 0.5;
 
@@ -239,6 +239,16 @@ static void CG_OffsetThirdPersonView( void ) {
 	sideScale = sin( cg_thirdPersonAngle.value / 180 * M_PI );
 	VectorMA( view, -cg_thirdPersonRange.value * forwardScale, forward, view );
 	VectorMA( view, -cg_thirdPersonRange.value * sideScale, right, view );
+
+	if(cg.predictedPlayerState.pm_type == PM_BIRDSEYE
+			|| cg_birdsEye.integer) {
+		// Zygote - Out 300 units to the right
+		view[2] += 300;
+	} else
+	if(cg.predictedPlayerState.pm_type == PM_PLATFORM) {
+		// Zygote - Out 300 units to the right
+		view[1] -= 300;
+	}
 
 	// trace a ray from the origin to the viewpoint to make sure the view isn't
 	// in a solid block.  Use an 8 by 8 block to prevent the view from near clipping anything
@@ -266,8 +276,20 @@ static void CG_OffsetThirdPersonView( void ) {
 	if ( focusDist < 1 ) {
 		focusDist = 1;	// should never happen
 	}
-	cg.refdefViewAngles[PITCH] = -180 / M_PI * atan2( focusPoint[2], focusDist );
-	cg.refdefViewAngles[YAW] -= cg_thirdPersonAngle.value;
+
+	//cg.refdefViewAngles[PITCH] = -180 / M_PI * atan2( focusPoint[2], focusDist );
+	//cg.refdefViewAngles[YAW] -= cg_thirdPersonAngle.value;
+
+	if(cg.predictedPlayerState.pm_type == PM_BIRDSEYE
+			|| cg_birdsEye.integer) {
+		cg.refdefViewAngles[PITCH] = 90;
+		cg.refdefViewAngles[YAW] = 90;
+	} else 
+	if(cg.predictedPlayerState.pm_type == PM_PLATFORM) {
+		// Zygote - These values are locked in place
+		cg.refdefViewAngles[PITCH] = 0;		// locked at level view of players head
+		cg.refdefViewAngles[YAW] = 90;		// looking in!
+	}
 }
 
 
@@ -667,7 +689,10 @@ static int CG_CalcViewValues( void ) {
 		}
 	}
 
-	if ( cg.renderingThirdPerson ) {
+	if ( cg.renderingThirdPerson
+		|| cg.predictedPlayerState.pm_type == PM_BIRDSEYE
+		|| cg_birdsEye.integer
+		|| cg.predictedPlayerState.pm_type == PM_PLATFORM ) {
 		// back away from character
 		CG_OffsetThirdPersonView();
 	} else {
@@ -831,7 +856,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	CG_PredictPlayerState();
 
 	// decide on third person view
-	cg.renderingThirdPerson = cg_thirdPerson.integer || (cg.snap->ps.stats[STAT_HEALTH] <= 0);
+	cg.renderingThirdPerson = qtrue; //cg_thirdPerson.integer || (cg.snap->ps.stats[STAT_HEALTH] <= 0);
 
 	CG_TrackClientTeamChange();
 

@@ -78,6 +78,7 @@ vmCvar_t	g_enableBreath;
 vmCvar_t	g_proxMineTimeout;
 #endif
 
+vmCvar_t	g_birdsEye;
 
 static cvarTable_t gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -164,7 +165,10 @@ static cvarTable_t gameCvarTable[] = {
 	{ &pmove_fixed, "pmove_fixed", "0", CVAR_SYSTEMINFO, 0, qfalse},
 	{ &pmove_msec, "pmove_msec", "8", CVAR_SYSTEMINFO, 0, qfalse},
 
-	{ &g_rotation, "g_rotation", "", CVAR_ARCHIVE, 0, qfalse }
+	{ &g_rotation, "g_rotation", "", CVAR_ARCHIVE, 0, qfalse },
+
+
+	{&g_birdsEye, "g_birdsEye", "0", CVAR_TEMP, 0, qfalse},
 
 };
 

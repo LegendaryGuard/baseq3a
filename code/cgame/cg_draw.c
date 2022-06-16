@@ -2016,7 +2016,8 @@ static void CG_DrawCrosshair( void ) {
 		return;
 	}
 
-	if ( cg.renderingThirdPerson ) {
+	if ( cg.renderingThirdPerson
+		&& cg.predictedPlayerState.pm_type != PM_BIRDSEYE ) {
 		return;
 	}
 

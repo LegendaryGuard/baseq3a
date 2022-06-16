@@ -813,6 +813,8 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.pm_type = PM_NOCLIP;
 	} else if ( client->ps.stats[STAT_HEALTH] <= 0 ) {
 		client->ps.pm_type = PM_DEAD;
+	} else if (g_birdsEye.integer) {
+		client->ps.pm_type = PM_BIRDSEYE;
 	} else {
 		client->ps.pm_type = PM_NORMAL;
 	}
@@ -919,6 +921,30 @@ void ClientThink_real( gentity_t *ent ) {
 #else
 		Pmove (&pm);
 #endif
+
+	// ZYGOTE START
+	if (!(ent->r.svFlags & SVF_BOT)) { // (Human) NOT A BOT
+		short		temp;
+
+		// Setup temp
+		temp = ent->client->pers.cmd.angles[YAW] + ent->client->ps.delta_angles[YAW];		
+		
+		// Some ugly shit, but it works :)
+		if ( (temp > -30000) && (temp < 0) ) {
+			ent->client->ps.delta_angles[YAW] = -1000 - ent->client->pers.cmd.angles[YAW];
+			temp = 0; // RIGHT
+		}
+		if ( (temp < 30000) && (temp > 0) ) {
+			ent->client->ps.delta_angles[YAW] = 1000 - ent->client->pers.cmd.angles[YAW];
+			temp = 32000; // LEFT
+		}	
+
+		// Copy modified YAW into viewangles
+		ent->client->ps.viewangles[YAW] = SHORT2ANGLE(temp);
+
+	}
+	// ZYGOTE FINISH
+
 
 	// save results of pmove
 	if ( ent->client->ps.eventSequence != oldEventSequence ) {

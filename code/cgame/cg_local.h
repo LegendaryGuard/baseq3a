@@ -1272,6 +1272,9 @@ extern	vmCvar_t		cg_deadBodyDarken;
 extern	vmCvar_t		cg_fovAdjust;
 extern	vmCvar_t		cg_followKiller;
 
+
+extern  vmCvar_t    cg_birdsEye;
+
 extern const char		*eventnames[EV_MAX];
 
 
