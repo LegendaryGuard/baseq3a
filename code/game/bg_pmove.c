@@ -1906,28 +1906,32 @@ void PmoveSingle (pmove_t *pmove) {
 
 	pml.frametime = pml.msec * 0.001;
 
+	if(pm->ps->pm_type == PM_PLATFORM) {
+		// Zygote Start
+		pm->cmd.rightmove = 0; // no strafe ever!
+		PM_UpdateViewAngles( pm->ps, &pm->cmd );	// Update angles from controls!!??
+
+		// This sets my movement direction based on my view angles
+		AngleVectors (pm->ps->viewangles, pml.forward, pml.right, pml.up);
+		pml.forward[0] = 16000;
+		pml.forward[1] = 0;
+		pml.forward[2] = 0;
+
+		if ( pm->cmd.forwardmove < 0 ) {			// Backwards Key Pressed
+			pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN; // Normal Forward Animation
+		} else if ( pm->cmd.forwardmove > 0) {		// Forwards Key Pressed
+			pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN;	// Normal Forward Animation
+		}
+		// Zygote End
+	} else {
+
 	// update the viewangles
-	//PM_UpdateViewAngles( pm->ps, &pm->cmd );
+	PM_UpdateViewAngles( pm->ps, &pm->cmd );
 
-	//AngleVectors (pm->ps->viewangles, pml.forward, pml.right, pml.up);
-
-
-// Zygote Start
-	pm->cmd.rightmove = 0; // no strafe ever!
-	PM_UpdateViewAngles( pm->ps, &pm->cmd );	// Update angles from controls!!??
-
-	// This sets my movement direction based on my view angles
 	AngleVectors (pm->ps->viewangles, pml.forward, pml.right, pml.up);
-	pml.forward[0] = 16000;
-	pml.forward[1] = 0;
-	pml.forward[2] = 0;
 
-	if ( pm->cmd.forwardmove < 0 ) {			// Backwards Key Pressed
-		pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN; // Normal Forward Animation
-	} else if ( pm->cmd.forwardmove > 0) {		// Forwards Key Pressed
-		pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN;	// Normal Forward Animation
 	}
-// Zygote End
+
 
 	if ( pm->cmd.upmove < 10 ) {
 		// not holding jump

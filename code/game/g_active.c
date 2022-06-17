@@ -922,6 +922,7 @@ void ClientThink_real( gentity_t *ent ) {
 		Pmove (&pm);
 #endif
 
+#if 0
 	// ZYGOTE START
 	if (!(ent->r.svFlags & SVF_BOT)) { // (Human) NOT A BOT
 		short		temp;
@@ -944,6 +945,7 @@ void ClientThink_real( gentity_t *ent ) {
 
 	}
 	// ZYGOTE FINISH
+#endif
 
 
 	// save results of pmove

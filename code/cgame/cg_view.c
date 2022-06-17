@@ -240,16 +240,6 @@ static void CG_OffsetThirdPersonView( void ) {
 	VectorMA( view, -cg_thirdPersonRange.value * forwardScale, forward, view );
 	VectorMA( view, -cg_thirdPersonRange.value * sideScale, right, view );
 
-	if(cg.predictedPlayerState.pm_type == PM_BIRDSEYE
-			|| cg_birdsEye.integer) {
-		// Zygote - Out 300 units to the right
-		view[2] += 300;
-	} else
-	if(cg.predictedPlayerState.pm_type == PM_PLATFORM) {
-		// Zygote - Out 300 units to the right
-		view[1] -= 300;
-	}
-
 	// trace a ray from the origin to the viewpoint to make sure the view isn't
 	// in a solid block.  Use an 8 by 8 block to prevent the view from near clipping anything
 
@@ -267,6 +257,16 @@ static void CG_OffsetThirdPersonView( void ) {
 		}
 	}
 
+
+	if(cg.predictedPlayerState.pm_type == PM_BIRDSEYE
+			|| cg_birdsEye.integer) {
+		// Zygote - Out 300 units to the right
+		view[2] += 300;
+	} else
+	if(cg.predictedPlayerState.pm_type == PM_PLATFORM) {
+		// Zygote - Out 300 units to the right
+		view[1] -= 300;
+	}
 
 	VectorCopy( view, cg.refdef.vieworg );
 

@@ -1174,7 +1174,7 @@ void CG_PredictPlayerState( void ) {
 		}
 
 		// ZYGOTE START
-		{
+		if(cg.predictedPlayerState.pm_type == PM_PLATFORM) {
 			short		temp;
 			// Setup temp
 			temp = cg_pmove.cmd.angles[YAW] + cg_pmove.ps->delta_angles[YAW];
