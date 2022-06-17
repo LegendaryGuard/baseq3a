@@ -301,7 +301,13 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 	client = ent->client;
 
 	if ( client->sess.spectatorState != SPECTATOR_FOLLOW ) {
-		client->ps.pm_type = PM_SPECTATOR;
+		if (client->birdsEye || g_birdsEye.integer) {
+			client->ps.pm_type = PM_BIRDSEYE;
+		} else if (client->sideView) {
+			client->ps.pm_type = PM_PLATFORM;
+		} else {
+			client->ps.pm_type = PM_SPECTATOR;
+		}
 		client->ps.speed = g_speed.value * 1.25f; // faster than normal
 
 		// set up for pmove
@@ -489,7 +495,12 @@ void ClientIntermissionThink( gclient_t *client ) {
 	client->ps.eFlags &= ~EF_FIRING;
 
 	// the level will exit when everyone wants to or after timeouts
-
+	if (client->birdsEye || g_birdsEye.integer) {
+		client->ps.pm_type = PM_BIRDSEYE;
+	} else if (client->sideView) {
+		client->ps.pm_type = PM_PLATFORM;
+	}
+	
 	// swap and latch button actions
 	client->oldbuttons = client->buttons;
 	client->buttons = client->pers.cmd.buttons;
@@ -813,7 +824,7 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.pm_type = PM_NOCLIP;
 	} else if ( client->ps.stats[STAT_HEALTH] <= 0 ) {
 		client->ps.pm_type = PM_DEAD;
-	} else if (client->birdsEye) {
+	} else if (client->birdsEye || g_birdsEye.integer) {
 		client->ps.pm_type = PM_BIRDSEYE;
 	} else if (client->sideView) {
 		client->ps.pm_type = PM_PLATFORM;
@@ -924,6 +935,7 @@ void ClientThink_real( gentity_t *ent ) {
 		Pmove (&pm);
 #endif
 
+#if 0
 	if(pm.ps->pm_type == PM_BIRDSEYE) {
 		// ZYGOTE START
 		if (!(ent->r.svFlags & SVF_BOT)) { // (Human) NOT A BOT
@@ -959,7 +971,7 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 		// ZYGOTE FINISH
 	}
-
+#endif
 
 	// save results of pmove
 	if ( ent->client->ps.eventSequence != oldEventSequence ) {

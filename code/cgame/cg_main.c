@@ -275,7 +275,7 @@ static const cvarTable_t cvarTable[] = {
 	{ &cg_tracerLength, "cg_tracerlength", "100", CVAR_CHEAT },
 	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "40", CVAR_CHEAT },
 	{ &cg_thirdPersonAngle, "cg_thirdPersonAngle", "0", CVAR_CHEAT },
-	{ &cg_thirdPerson, "cg_thirdPerson", "0", CVAR_ARCHIVE | CVAR_USERINFO | CVAR_SERVERINFO },
+	{ &cg_thirdPerson, "cg_thirdPerson", "0", CVAR_TEMP | CVAR_USERINFO },
 	{ &cg_teamChatTime, "cg_teamChatTime", "3000", CVAR_ARCHIVE  },
 	{ &cg_teamChatHeight, "cg_teamChatHeight", "0", CVAR_ARCHIVE  },
 	{ &cg_forceModel, "cg_forceModel", "0", CVAR_ARCHIVE  },
@@ -340,7 +340,7 @@ static const cvarTable_t cvarTable[] = {
 
 	{ &cg_birdsEyeRange, "cg_birdsEyeRange", "300", CVAR_CHEAT },
 	{ &cg_birdsEyeAngle, "cg_birdsEyeAngle", "0", CVAR_CHEAT },
-	{ &cg_birdsEye, "cg_birdsEye", "0", CVAR_ARCHIVE | CVAR_USERINFO | CVAR_SERVERINFO },
+	{ &cg_birdsEye, "cg_birdsEye", "0", CVAR_TEMP | CVAR_USERINFO },
 
 
 };
@@ -374,8 +374,8 @@ void CG_RegisterCvars( void ) {
 
 	trap_Cvar_Register(NULL, "model", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
 	trap_Cvar_Register(NULL, "headmodel", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
-	trap_Cvar_Register(NULL, "cg_birdsEye", "0", CVAR_USERINFO | CVAR_ARCHIVE );
-	trap_Cvar_Register(NULL, "cg_thirdPerson", "0", CVAR_USERINFO | CVAR_ARCHIVE );
+	trap_Cvar_Register(NULL, "cg_birdsEye", "0", CVAR_USERINFO | CVAR_TEMP );
+	trap_Cvar_Register(NULL, "cg_thirdPerson", "0", CVAR_USERINFO | CVAR_TEMP );
 	//trap_Cvar_Register(NULL, "team_model", DEFAULT_TEAM_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
 	//trap_Cvar_Register(NULL, "team_headmodel", DEFAULT_TEAM_HEAD, CVAR_USERINFO | CVAR_ARCHIVE );
 }

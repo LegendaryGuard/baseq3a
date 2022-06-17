@@ -858,6 +858,8 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	// decide on third person view
 	cg.renderingThirdPerson = cg_thirdPerson.integer 
 		|| cg_birdsEye.integer
+		|| cg.snap->ps.pm_type == PM_BIRDSEYE
+		|| cg.snap->ps.pm_type == PM_PLATFORM
 		|| (cg.snap->ps.stats[STAT_HEALTH] <= 0);
 
 	CG_TrackClientTeamChange();

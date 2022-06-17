@@ -2517,6 +2517,10 @@ void CG_Player( centity_t *cent ) {
 #endif
 	qboolean		darken;
 
+	if ( cg.levelShot ) {
+		return;
+	}
+
 	// the client number is stored in clientNum.  It can't be derived
 	// from the entity number, because a single client may have
 	// multiple corpses on the level using the same clientinfo
