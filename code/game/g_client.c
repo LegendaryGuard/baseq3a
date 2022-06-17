@@ -682,6 +682,31 @@ qboolean ClientUserinfoChanged( int clientNum ) {
 	}
 #endif
 
+
+	s = Info_ValueForKey( userinfo, "cg_thirdperson" );
+	if ( *s && atoi( s ) != 0 ) {
+		// TODO: AIM towards the surface it would hit, through portals
+		client->ps.pm_type = PM_THIRDPERSON;
+		client->thirdPerson = qtrue;
+	} else {
+		client->thirdPerson = qfalse;
+	}
+	s = Info_ValueForKey( userinfo, "cg_birdseye" );
+	if ( *s && atoi( s ) != 0 ) {
+		client->ps.pm_type = PM_BIRDSEYE;
+		client->birdsEye = qtrue;
+	} else {
+		client->birdsEye = qfalse;
+	}
+	s = Info_ValueForKey( userinfo, "cg_sideview" );
+	if ( *s && atoi( s ) != 0 ) {
+		client->ps.pm_type = PM_PLATFORM;
+		client->sideView = qtrue;
+	} else {
+		client->sideView = qfalse;
+	}
+
+
 	// set model
 	Q_strncpyz( model, Info_ValueForKey( userinfo, "model" ), sizeof( model ) );
 	Q_strncpyz( headModel, Info_ValueForKey( userinfo, "headmodel" ), sizeof( headModel ) );

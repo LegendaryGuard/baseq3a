@@ -76,14 +76,20 @@ PM_StartTorsoAnim
 ===================
 */
 static void PM_StartTorsoAnim( int anim ) {
-	if ( pm->ps->pm_type >= PM_DEAD ) {
+	if ( pm->ps->pm_type >= PM_DEAD 
+		&&  pm->ps->pm_type != PM_PLATFORM
+		&&  pm->ps->pm_type != PM_BIRDSEYE
+		&&  pm->ps->pm_type != PM_THIRDPERSON ) {
 		return;
 	}
 	pm->ps->torsoAnim = ( ( pm->ps->torsoAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT )
 		| anim;
 }
 static void PM_StartLegsAnim( int anim ) {
-	if ( pm->ps->pm_type >= PM_DEAD ) {
+	if ( pm->ps->pm_type >= PM_DEAD 
+		&&  pm->ps->pm_type != PM_PLATFORM
+		&&  pm->ps->pm_type != PM_BIRDSEYE
+		&&  pm->ps->pm_type != PM_THIRDPERSON ) {
 		return;
 	}
 	if ( pm->ps->legsTimer > 0 ) {
@@ -1906,6 +1912,13 @@ void PmoveSingle (pmove_t *pmove) {
 
 	pml.frametime = pml.msec * 0.001;
 
+	if(pm->ps->pm_type == PM_BIRDSEYE) {
+		pm->cmd.angles[PITCH] = SHORT2ANGLE(0);
+		PM_UpdateViewAngles( pm->ps, &pm->cmd );
+		AngleVectors (pm->ps->viewangles, pml.forward, pml.right, pml.up);
+		pm->ps->delta_angles[PITCH] = 0;
+		pm->ps->viewangles[PITCH] = SHORT2ANGLE(0);
+	} else
 	if(pm->ps->pm_type == PM_PLATFORM) {
 		// Zygote Start
 		pm->cmd.rightmove = 0; // no strafe ever!
@@ -1925,10 +1938,10 @@ void PmoveSingle (pmove_t *pmove) {
 		// Zygote End
 	} else {
 
-	// update the viewangles
-	PM_UpdateViewAngles( pm->ps, &pm->cmd );
+		// update the viewangles
+		PM_UpdateViewAngles( pm->ps, &pm->cmd );
 
-	AngleVectors (pm->ps->viewangles, pml.forward, pml.right, pml.up);
+		AngleVectors (pm->ps->viewangles, pml.forward, pml.right, pml.up);
 
 	}
 
@@ -1945,7 +1958,10 @@ void PmoveSingle (pmove_t *pmove) {
 		pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN;
 	}
 
-	if ( pm->ps->pm_type >= PM_DEAD ) {
+	if ( pm->ps->pm_type >= PM_DEAD
+		&&  pm->ps->pm_type != PM_PLATFORM
+		&&  pm->ps->pm_type != PM_BIRDSEYE
+		&&  pm->ps->pm_type != PM_THIRDPERSON ) {
 		pm->cmd.forwardmove = 0;
 		pm->cmd.rightmove = 0;
 		pm->cmd.upmove = 0;

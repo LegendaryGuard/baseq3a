@@ -122,6 +122,7 @@ typedef enum {
 	PM_FROZEN, // freeze tag, can spectate, can't move
 	PM_PLATFORM,
 	PM_BIRDSEYE,
+	PM_THIRDPERSON,
 
 	PM_LOOKSPLINE, // control look angle from spline
 	PM_MOVESPLINE, // control movement from spline

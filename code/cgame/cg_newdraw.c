@@ -1683,7 +1683,11 @@ void CG_OwnerDraw(float x, float y, float w, float h, float text_x, float text_y
 void CG_MouseEvent(int x, int y) {
 	int n;
 
-	if ( (cg.predictedPlayerState.pm_type == PM_NORMAL || cg.predictedPlayerState.pm_type == PM_SPECTATOR) && cg.showScores == qfalse) {
+	if ( (cg.predictedPlayerState.pm_type == PM_NORMAL 
+			|| cg.predictedPlayerState.pm_type == PM_BIRDSEYE
+			|| cg.predictedPlayerState.pm_type == PM_PLATFORM
+			|| cg.predictedPlayerState.pm_type == PM_THIRDPERSON
+		|| cg.predictedPlayerState.pm_type == PM_SPECTATOR) && cg.showScores == qfalse) {
     trap_Key_SetCatcher(0);
 		return;
 	}
@@ -1769,6 +1773,9 @@ void CG_KeyEvent(int key, qboolean down) {
 	}
 
 	if ( cg.predictedPlayerState.pm_type == PM_NORMAL 
+			|| cg.predictedPlayerState.pm_type == PM_BIRDSEYE
+			|| cg.predictedPlayerState.pm_type == PM_PLATFORM
+			|| cg.predictedPlayerState.pm_type == PM_THIRDPERSON
 			|| (cg.predictedPlayerState.pm_type == PM_SPECTATOR && cg.showScores == qfalse)) {
 		CG_EventHandling(CGAME_EVENT_NONE);
     trap_Key_SetCatcher(0);

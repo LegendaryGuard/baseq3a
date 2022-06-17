@@ -813,8 +813,10 @@ void ClientThink_real( gentity_t *ent ) {
 		client->ps.pm_type = PM_NOCLIP;
 	} else if ( client->ps.stats[STAT_HEALTH] <= 0 ) {
 		client->ps.pm_type = PM_DEAD;
-	} else if (g_birdsEye.integer) {
+	} else if (client->birdsEye) {
 		client->ps.pm_type = PM_BIRDSEYE;
+	} else if (client->sideView) {
+		client->ps.pm_type = PM_PLATFORM;
 	} else {
 		client->ps.pm_type = PM_NORMAL;
 	}
@@ -922,30 +924,41 @@ void ClientThink_real( gentity_t *ent ) {
 		Pmove (&pm);
 #endif
 
-#if 0
-	// ZYGOTE START
-	if (!(ent->r.svFlags & SVF_BOT)) { // (Human) NOT A BOT
-		short		temp;
+	if(pm.ps->pm_type == PM_BIRDSEYE) {
+		// ZYGOTE START
+		if (!(ent->r.svFlags & SVF_BOT)) { // (Human) NOT A BOT
 
-		// Setup temp
-		temp = ent->client->pers.cmd.angles[YAW] + ent->client->ps.delta_angles[YAW];		
-		
-		// Some ugly shit, but it works :)
-		if ( (temp > -30000) && (temp < 0) ) {
-			ent->client->ps.delta_angles[YAW] = -1000 - ent->client->pers.cmd.angles[YAW];
-			temp = 0; // RIGHT
+			// Copy modified YAW into viewangles
+			ent->client->ps.delta_angles[PITCH] = 0;
+			ent->client->ps.viewangles[PITCH] = SHORT2ANGLE(0);
+
 		}
-		if ( (temp < 30000) && (temp > 0) ) {
-			ent->client->ps.delta_angles[YAW] = 1000 - ent->client->pers.cmd.angles[YAW];
-			temp = 32000; // LEFT
-		}	
+		// ZYGOTE FINISH
+	} else
+	if(pm.ps->pm_type == PM_PLATFORM) {
+		// ZYGOTE START
+		if (!(ent->r.svFlags & SVF_BOT)) { // (Human) NOT A BOT
+			short		temp;
 
-		// Copy modified YAW into viewangles
-		ent->client->ps.viewangles[YAW] = SHORT2ANGLE(temp);
+			// Setup temp
+			temp = ent->client->pers.cmd.angles[YAW] + ent->client->ps.delta_angles[YAW];		
+			
+			// Some ugly shit, but it works :)
+			if ( (temp > -30000) && (temp < 0) ) {
+				ent->client->ps.delta_angles[YAW] = -1000 - ent->client->pers.cmd.angles[YAW];
+				temp = 0; // RIGHT
+			}
+			if ( (temp < 30000) && (temp > 0) ) {
+				ent->client->ps.delta_angles[YAW] = 1000 - ent->client->pers.cmd.angles[YAW];
+				temp = 32000; // LEFT
+			}	
 
+			// Copy modified YAW into viewangles
+			ent->client->ps.viewangles[YAW] = SHORT2ANGLE(temp);
+
+		}
+		// ZYGOTE FINISH
 	}
-	// ZYGOTE FINISH
-#endif
 
 
 	// save results of pmove
