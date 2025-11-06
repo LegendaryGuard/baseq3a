@@ -798,8 +798,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	// the intermission has allready been qualified for, so don't
 	// allow any extra scoring
 	if ( level.intermissionQueued ) {
+
 		// With a special exception for gibbing bodies.
-		if (targ->die == body_die && g_allowGibbingAfterMatchEnd.integer) {
+		// This was introduced in https://github.com/ec-/baseq3a/pull/50.
+		if (targ->die == body_die) {
 			// Note that this also affects the situation where the last frag
 			// is done with the shotgun. Because each pellet calls `G_Damage`
 			// separately. That is, if we don't do this,
@@ -818,6 +820,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				targ->die (targ, inflictor, attacker, damage, mod);
 			}
 		}
+
 		return;
 	}
 #ifdef MISSIONPACK
