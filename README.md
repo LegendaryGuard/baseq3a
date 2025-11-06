@@ -11,7 +11,7 @@ Unofficial Quake III Arena gamecode patch
  * fixed spawn system
  * fixed in-game crosshair proportions
  * fixed UI mouse sensitivity for high-resolution
- * fixed shotgun not gibbing unless aiming at the feet (`g_shotgunGibFix` CVAR)
+ * fixed shotgun not gibbing unless aiming at the feet
  * fixed server browser + faster scanning
  * fixed grappling hook muzzle position visuals
  * new demo UI (subfolders,filtering,sorting)
